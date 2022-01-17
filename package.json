@@ -1,0 +1,14 @@
+{
+  "name": "graphql-ecommerce-ztm",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:DRSantillan/graphql-ecommerce-ztm.git",
+  "author": "Dean <dean@deansantillan.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.2",
+    "express-graphql": "^0.12.0",
+    "graphql": "^16.2.0"
+  },
+  "type": "module"
+}
