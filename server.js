@@ -1,79 +1,34 @@
 import express from 'express';
-
-import { buildSchema } from 'graphql';
 import { graphqlHTTP } from 'express-graphql';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { loadFilesSync } from '@graphql-tools/load-files';
+import path from 'path';
+import { products } from './products/products.model.js';
+import { orders } from './orders/orders.model.js';
+
+const typesArray = loadFilesSync(path.resolve('**/*.graphql'));
+const schema = makeExecutableSchema({
+	typeDefs: [typesArray],
+	resolvers: {
+		Query: {
+			products: async parent => {
+				console.log('getting the products...');
+				const products = await Promise.resolve(parent.products)
+				return products;
+			},
+			orders: async parent => {
+				console.log('getting orders....');
+				const orders = await Promise.resolve(parent.orders);
+				return orders;
+			},
+		},
+	},
+});
 const app = express();
-const schema = buildSchema(`
-	type Query {
-		products: [Product]
-		orders: [Order]
-	}
-
-	type Product {
-		id: ID!
-		description: String!
-		reviews: [Review]
-		price: Float!
-	}
-
-	type Review {
-		rating: Int!
-		comment: String
-	}
-
-	type Order {
-		date: String!
-		subtotal: Float!
-		items: [OrderItem]
-	}
-
-	type OrderItem {
-		 product: Product!
-		 quantity: Int!
-	}
-`);
 
 const root = {
-	products: [
-		{
-			id: 'redshoe',
-			description: 'Red Shoe',
-			price: 39.99,
-			reviews: [
-				{
-					rating: 5,
-					comment: 'absolutely beautiful shoes',
-				},
-			],
-		},
-		{
-			id: 'bluejean',
-			description: 'Blue Jean',
-			price: 59.99,
-		},
-	],
-	orders: [
-		{
-			date: '2022-01-10',
-			subtotal: 98.99,
-			items: [
-				{
-					product: {
-						id: 'redshoe',
-						description: 'old red shoe from long ago',
-						price: 49.99,
-						reviews: [
-							{
-								rating: 5,
-								comment: 'absolutely beautiful shoes',
-							},
-						],
-					},
-					quantity: 2,
-				},
-			],
-		},
-	],
+	products,
+	orders,
 };
 
 app.use(express.json());

@@ -6,9 +6,17 @@
   "author": "Dean <dean@deansantillan.com>",
   "license": "MIT",
   "dependencies": {
+    "@graphql-tools/load-files": "^6.5.3",
+    "@graphql-tools/schema": "^8.3.1",
     "express": "^4.17.2",
     "express-graphql": "^0.12.0",
     "graphql": "^16.2.0"
   },
-  "type": "module"
+  "scripts": {
+    "start": "nodemon server"
+  },
+  "type": "module",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }
