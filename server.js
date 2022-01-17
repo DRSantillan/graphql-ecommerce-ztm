@@ -7,36 +7,19 @@ import { products } from './products/products.model.js';
 import { orders } from './orders/orders.model.js';
 
 const typesArray = loadFilesSync(path.resolve('**/*.graphql'));
+const resolversArray = loadFilesSync(path.resolve('**/*.resolvers.js'));
+
 const schema = makeExecutableSchema({
 	typeDefs: [typesArray],
-	resolvers: {
-		Query: {
-			products: async parent => {
-				console.log('getting the products...');
-				const products = await Promise.resolve(parent.products)
-				return products;
-			},
-			orders: async parent => {
-				console.log('getting orders....');
-				const orders = await Promise.resolve(parent.orders);
-				return orders;
-			},
-		},
-	},
+	resolvers: resolversArray,
 });
 const app = express();
-
-const root = {
-	products,
-	orders,
-};
 
 app.use(express.json());
 app.use(
 	'/graphql',
 	graphqlHTTP({
 		schema: schema,
-		rootValue: root,
 		graphiql: true,
 	})
 );

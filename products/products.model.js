@@ -1,4 +1,4 @@
-export const products = [
+const products = [
 	{
 		id: 'redshoe',
 		description: 'Red Shoe',
@@ -16,3 +16,9 @@ export const products = [
 		price: 59.99,
 	},
 ];
+
+const getAllProducts = () => {
+	return products;
+};
+
+export { getAllProducts };
