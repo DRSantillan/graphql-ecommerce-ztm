@@ -3,14 +3,15 @@ import { graphqlHTTP } from 'express-graphql';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { loadFilesSync } from '@graphql-tools/load-files';
 import path from 'path';
-import { products } from './products/products.model.js';
-import { orders } from './orders/orders.model.js';
+import { allResolvers } from './resolvers/index.resolvers.js';
 
-const typesArray = loadFilesSync(path.resolve('**/*.graphql'));
-const resolversArray = loadFilesSync(path.resolve('**/*.resolvers.js'));
 
+const typesArray = await loadFilesSync(path.resolve('**/*.graphql'));
+const resolversArray = allResolvers;
+console.log(resolversArray)
+console.log(typesArray);
 const schema = makeExecutableSchema({
-	typeDefs: [typesArray],
+	typeDefs: typesArray,
 	resolvers: resolversArray,
 });
 const app = express();
