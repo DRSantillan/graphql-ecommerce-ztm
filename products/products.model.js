@@ -45,15 +45,15 @@ const addNewProduct = (id, description, price) => {
 };
 
 const addNewProductReview = (id, rating, comment) => {
-	const newReview = {
-		rating,
-		comment,
-	};
-	const mutateProduct = products.find(product => product.id === id);
-
-	mutateProduct.reviews.push(newReview);
-
-	return mutateProduct;
+	const matchedProduct = getProductByID(id);
+	if (matchedProduct) {
+		const newReview = {
+			rating,
+			comment,
+		};
+		matchedProduct.reviews.push(newReview);
+		return newReview;
+	}
 };
 
 export {
